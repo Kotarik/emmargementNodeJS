@@ -1,6 +1,7 @@
 'use strict';
 var request = require('request');
 var fs = require('fs');
+var variables = require("../variables.js");
 
 //var mongoose = require('mongoose'),
 // Commentaire = mongoose.model('Commentaire'),
@@ -54,37 +55,47 @@ var port = process.env.MONGODB_ADDON_PORT;
 			response.json({ message: 'id stocké'});
 		},
 
-		connexion: function(req, response)
-		{
-			//connexion a CO2
-			request.post(
-			{
-		  		headers: {'content-type' : 'application/x-www-form-urlencoded'},
-		  		url:     'https://sandbox.compteco2.com/v1/login',
-		  		body:    { "app":APP_ID, "secret":SECRET }
-			}, function(error, res, body)
-			{
-				if (body.name == "BOC" && body.app=="5ab51d7bff563c1583e2cde8")
-				{
-					var token=body.token;
-					console.log("body.token");
-					console.log(body.token);
+		connexion: function (req, response) {
 
-					var token_exp=body.token_exp;
-					console.log("body.token_exp");
-					console.log(body.token_exp);
+        //connexion a CO2
 
-					var token_iat=body.token_iat;
-					console.log("body.token_iat");
-					console.log(body.token_iat);
+        request.post({
 
-					response.status(201);
+            headers: {'content-type': 'application/x-www-form-urlencoded'},
+            url: 'https://sandbox.compteco2.com/v1/login',
+            form: {"app": variables.APP_ID, "secret": variables.SECRET}
 
-				}
-				//else if token token expiré on en redemande un autre
-			});
-			
-		}
+        }, function (error, res) {
+
+            if (res.statusCode === 200) {
+
+                var body = JSON.parse(res.body)
+
+                if (body.name == "BOC" && body.app == APP_ID) {
+
+                    var token = body.token;
+                    console.log("body.token");
+                    console.log(body.token);
+
+                    var token_exp = body.token_exp;
+                    console.log("body.token_exp");
+                    console.log(body.token_exp);
+
+                    var token_iat = body.token_iat;
+                    console.log("body.token_iat");
+                    console.log(body.token_iat);
+
+                    response.status(201);
+
+                }
+
+            }
+
+            //else if token token expiré on en redemande un autre
+
+        });
+
+    }
 
 /**
 		infos: function(req, response)
