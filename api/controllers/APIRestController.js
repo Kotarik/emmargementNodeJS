@@ -89,6 +89,8 @@ var port = process.env.MONGODB_ADDON_PORT;
 
                 }
 
+            } else {
+            	response.status(500);
             }
 
             //else if token token expiré on en redemande un autre
