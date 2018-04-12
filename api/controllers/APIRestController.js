@@ -71,7 +71,7 @@ var port = process.env.MONGODB_ADDON_PORT;
 
                 var body = JSON.parse(res.body)
 
-                if (body.name == "BOC" && body.app == APP_ID) {
+                if (body.name == "BOC" && body.app == variables.APP_ID) {
 
                     var token = body.token;
                     console.log("body.token");
