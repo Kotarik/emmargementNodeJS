@@ -1,8 +1,6 @@
 'use strict';
 var request = require('request');
 var fs = require('fs');
-var APP_ID = "5ab51d7bff563c1583e2cde8";
-var SECRET = "b0275b7fd2b1e039c3ffe5c13dfd8500928d763ed0e270b8d68602c168021df31366a25b2cc1fbe1333f746c533bdc8ef222a18398f1f90fa44214f90216c358e677e0d20e40443dcf122823ad69d8e1e03a8c8c9f681ef4818b64c7823dd1c4b35e216abb74141f0451a2e7aae929c7b700e4a5b991af0f0b60f94a234ceb38";
 
 //var mongoose = require('mongoose'),
 // Commentaire = mongoose.model('Commentaire'),

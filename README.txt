@@ -1,36 +1,35 @@
-Afin d'utiliser cette API REST il est nécéssaire de se connecter sur http://88.185.195.174:3000
-
-Si le serveur nodeJs est planter, ne pas hésiter a me demander de le redémarrer
+Pour le moment, cette API REST est utilisé en local sur une VM.
 
 Les requettes fonctionnelles sont les suivantes : 
-	get all films
-	url :
-		http://88.185.195.174:3000/film
 
-	post creation de film
-	url : 
-		http://88.185.195.174:3000/film
+	post remonté de l'id carte
+	url :
+		http://localhost:3000/id_carte
+
 	body :
 		{
-		  "film": "oui-oui",
-		  "auteur": "un auteur"
+		  "id": 123456
 		}
 
-	post creation commentaire (les commentaires sont aux films par l'id du film)
+	get racine afin de tester le bon fonctionnement du serveur nodeJS
+	url:
+		http://localhost:3000/
+	retour : "Houra !"
+
+	
+Les requetes en cours de développement:
+
+	post connexion à l'API distante 
 	url : 
-		http://localhost:3000/film/5a70aac060b2c0256c0ee117/commentaire
+		http://localhost:3000/connexion
 	body : 
 		{
-		  "filmId": "5a70aac060b2c0256c0ee117",
-		  "text": "bonne critique"
+		  ... a venir...
 		}
 
-	get film by id
+	get pour récuperer des infos
 	url :
-		http://localhost:3000/film/5a70aac060b2c0256c0ee117
+		http://localhost:3000/infos
 
-	Erreure connu : 
-	Lorsque l'on renvoi un mauvais ID (bonne longeur de caractère) une erreur 500 est bien renvoyé.
-	Lorsque l'on renvoi un mauvais ID (mauvaise longueur de caractère,) une erreur 200 est malheureusement envoyé.
-
+	
 	
