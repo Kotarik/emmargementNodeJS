@@ -1,7 +1,7 @@
 'use strict';
 var request = require('request');
 var fs = require('fs');
-var variables = require("../variables.js");
+var variables = require('/var/www/html/api/variables.json');
 
 //var mongoose = require('mongoose'),
 // Commentaire = mongoose.model('Commentaire'),
@@ -59,13 +59,15 @@ var port = process.env.MONGODB_ADDON_PORT;
 
         //connexion a CO2
 
-        request.post({
+        request.post(
+        {
 
             headers: {'content-type': 'application/x-www-form-urlencoded'},
             url: 'https://sandbox.compteco2.com/v1/login',
             form: {"app": variables.APP_ID, "secret": variables.SECRET}
 
-        }, function (error, res) {
+        }, function (error, res) 
+        {
 
             if (res.statusCode === 200) {
 
@@ -86,7 +88,7 @@ var port = process.env.MONGODB_ADDON_PORT;
                     console.log(body.token_iat);
 
                     response.status(201);
-
+                    response.json({ connexion: 'effectué'});
                 }
 
             } else {
