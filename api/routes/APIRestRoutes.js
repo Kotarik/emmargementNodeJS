@@ -6,7 +6,7 @@ module.exports = function(app) {
 
 	app.post('/id_carte', API.remonte_id_carte);
 	app.get('/connexion', API.connexion);
-	//app.get('/infos', API.get_infos);
+	app.get('/infos', API.infos);
 	app.get('/', API.get_racine);
 //	app.get('/film', API.list_all_film);
 	

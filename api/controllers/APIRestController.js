@@ -2,6 +2,9 @@
 var request = require('request');
 var fs = require('fs');
 var variables = require('/var/www/html/api/variables.json');
+var token = null;
+var token_exp = 0;
+var token_iat = 0;
 
 //var mongoose = require('mongoose'),
 // Commentaire = mongoose.model('Commentaire'),
@@ -24,19 +27,6 @@ var port = process.env.MONGODB_ADDON_PORT;
 	module.exports = 
 	{
 	
-/**		list_all_film: function(req, res) {
-			MongoClient.connect(url, function(err, back) {
-				if (err) throw err;
-				var dbo = back.db("API");
-				
-				dbo.collection("films").find().toArray(function(err, film) {
-					if (err) throw err;
-					res.status(200);
-					res.json(film);
-			    });
-			});
-		},
-**/
 		get_racine: function(req, response) 
 		{
 
@@ -55,128 +45,89 @@ var port = process.env.MONGODB_ADDON_PORT;
 			response.json({ message: 'id stocké'});
 		},
 
-		connexion: function (req, response) {
+		connexion: function (req, response) 
+		{
 
         //connexion a CO2
 
-        request.post(
-        {
+	        request.post(
+	        {
 
-            headers: {'content-type': 'application/x-www-form-urlencoded'},
-            url: 'https://sandbox.compteco2.com/v1/login',
-            form: {"app": variables.APP_ID, "secret": variables.SECRET}
+	            headers: {'content-type': 'application/x-www-form-urlencoded'},
+	            url: 'https://sandbox.compteco2.com/v1/login',
+	            form: {"app": variables.APP_ID, "secret": variables.SECRET}
 
-        }, function (error, res) 
-        {
+	        }, function (error, res) 
+	        {
 
-            if (res.statusCode === 200) {
+	            if (res.statusCode === 200) 
+	            {
 
-                var body = JSON.parse(res.body)
+	                var body = JSON.parse(res.body);
 
-                if (body.name == "BOC" && body.app == variables.APP_ID) {
+	                if (body.name == "BOC" && body.app == variables.APP_ID) 
+	                {
 
-                    var token = body.token;
-                    console.log("body.token");
-                    console.log(body.token);
+	                    token = body.token;
+	                    console.log("body.token");
+	                    console.log(body.token);
 
-                    var token_exp = body.token_exp;
-                    console.log("body.token_exp");
-                    console.log(body.token_exp);
+	                    token_exp = body.token_exp;
+	                    console.log("body.token_exp");
+	                    console.log(body.token_exp);
 
-                    var token_iat = body.token_iat;
-                    console.log("body.token_iat");
-                    console.log(body.token_iat);
+	                    token_iat = body.token_iat;
+	                    console.log("body.token_iat");
+	                    console.log(body.token_iat);
 
-                    response.status(201);
-                    response.json({ connexion: 'effectué'});
-                }
+	                    response.status(201);
+	                    response.json({ connexion: 'effectué'});
+	                }
 
-            } else {
-            	response.status(500);
-            }
+	            }
+
+	            else 
+	            {
+	            	response.status(500);
+	            	response.json({ connexion: 'echec'});
+	            }
 
             //else if token token expiré on en redemande un autre
+			 });
+   		},
 
-        });
 
-    }
-
-/**
 		infos: function(req, response)
 		{
-
 			//envoi de l'ID_carte a CO2
-			request.get(("https://sandbox.compteco2.com/v1/user/cards/?pan="+=ID_carte).auth(null, null, true, "bearer"+=token), function(error, response, body) 
-			{
-		   		var prenom=body.firstName;
-		   		var nom = body.lastName;
-		   		//reception nom + prenom et écriture dans un fichier
-		   		fs.writeFile("/var/www/html/log/"+=ID_carte".txt", "prenom= "+=prenom+=" - nom= "+=nom+=" - id_carte = "+=ID_carte , function (err) {
-		 	 		if (err) throw err;
-		  			console.log("etudiant ecrit dans fichier /var/www/html/log/"+=ID_carte".txt");
-				});
-			});
-		}
-**/
-	};
-	
+			request.get("https://sandbox.compteco2.com/v1/user/cards/?pan="+variables.ID_carte2,{
 
-/**		create_a_commentaire: function(req, response)
-		{
-			MongoClient.connect(url, function(err, back)
+				'auth' : {
+					'bearer' : 'bearer'+token
+				}
+			}, function (error, res) 
 			{
-				if (err) throw err;
-				var dbo = back.db("API");
-				
-				
-//					console.log("body");
-//					console.log(req.body);					
-				dbo.collection("commentaires").insertOne(req.body, function(err, res)
-				{
-					if (err) throw err;
-					response.status(201);
-					response.json({ message: 'commentaire créé '});
-				});								
-			});
-		},
-		
-		
-		read_a_film: function(req, response)
-		{
-			MongoClient.connect(url, function(err, back)
-			{
-				if (err) throw err;
-				var dbo = back.db("API");
-				
-				try {
-						dbo.collection("films").findOne( {"_id": new Mongo.ObjectID(req.params.filmId) }, function(err, film) {
-							console.log("film");
-							console.log(film);
-							if (err)
-							{
-								response.send(err);
-								response.status(500);
-							} else 
-							{
-								if (film == null)
-								{
-									response.status(500);
-									response.send ("mauvais ID");
-									
-								} else {
-									response.status(200);
-									response.json(film);
-								
-								}
-							}
+				if (res.statusCode === 200) 
+	            {
+	            	var body = JSON.parse(res.body);
+
+            		var prenom=body.firstName;
+			   		var nom = body.lastName;
+			   		//var fichier = "/var/www/html/log/"+variables.ID_carte2+".txt";
+			   		//reception nom + prenom et écriture dans un fichier
+			   		fs.writeFile('/var/www/html/log/'+variables.ID_carte2+'.txt', 'prenom= '+prenom+' - nom= '+nom+' - id_carte = '+variables.ID_carte2, function (err) {
+			   		//	fs.writeFile('/var/www/html/log/.txt', 'prenom=', function (err) {
+				 	 		if (err) throw err;
+				  			console.log('etudiant ecrit dans fichier /var/www/html/log/'+variables.ID_carte2+'.txt');
+	                    	response.status(201);
+	                    	response.json({ ecriture: 'faite'});
 						});
-					}
-					catch (err) 
-					{
-							response.send(err);
-							response.status(500);
-					}
+	            } else {
+	            	response.status(500);
+	            	response.json({ recup_data: 'echec'});
+	            	//if (err) throw err;
+	            }
 			});
 		}
-**/		
-	
+
+	};
