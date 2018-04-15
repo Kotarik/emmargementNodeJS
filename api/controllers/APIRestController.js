@@ -48,53 +48,53 @@ var port = process.env.MONGODB_ADDON_PORT;
 		connexion: function (req, response) 
 		{
 
-        //connexion a CO2
+		//connexion a CO2
 
-	        request.post(
-	        {
+			request.post(
+			{
 
-	            headers: {'content-type': 'application/x-www-form-urlencoded'},
-	            url: 'https://sandbox.compteco2.com/v1/login',
-	            form: {"app": variables.APP_ID, "secret": variables.SECRET}
+				headers: {'content-type': 'application/x-www-form-urlencoded'},
+				url: 'https://sandbox.compteco2.com/v1/login',
+				form: {"app": variables.APP_ID, "secret": variables.SECRET}
 
-	        }, function (error, res) 
-	        {
+			}, function (error, res) 
+			{
 
-	            if (res.statusCode === 200) 
-	            {
+				if (res.statusCode === 200) 
+				{
 
-	                var body = JSON.parse(res.body);
+					var body = JSON.parse(res.body);
 
-	                if (body.name == "BOC" && body.app == variables.APP_ID) 
-	                {
+					if (body.name == "BOC" && body.app == variables.APP_ID) 
+					{
 
-	                    token = body.token;
-	                    console.log("body.token");
-	                    console.log(body.token);
+						token = body.token;
+						console.log("body.token");
+						console.log(body.token);
 
-	                    token_exp = body.token_exp;
-	                    console.log("body.token_exp");
-	                    console.log(body.token_exp);
+						token_exp = body.token_exp;
+						console.log("body.token_exp");
+						console.log(body.token_exp);
 
-	                    token_iat = body.token_iat;
-	                    console.log("body.token_iat");
-	                    console.log(body.token_iat);
+						token_iat = body.token_iat;
+						console.log("body.token_iat");
+						console.log(body.token_iat);
 
-	                    response.status(201);
-	                    response.json({ connexion: 'effectuée'});
-	                }
+						response.status(201);
+						response.json({ connexion: 'effectuée'});
+					}
 
-	            }
+				}
 
-	            else 
-	            {
-	            	response.status(500);
-	            	response.json({ connexion: 'Prout'});
-	            }
+				else 
+				{
+					response.status(500);
+					response.json({ connexion: 'Prout'});
+				}
 
-            //else if token token expiré on en redemande un autre
+			//else if token token expiré on en redemande un autre
 			 });
-   		},
+		},
 
 
 		infos: function(req, response)
@@ -108,37 +108,35 @@ var port = process.env.MONGODB_ADDON_PORT;
 			}, function (error, res) 
 			{
 				if (!res.statusCode) {
-  					err = new Error('node-librato-metrics: No response received!')
-  					throw err
+					err = new Error('node-librato-metrics: No response received!')
+					throw err
 				
-	    			var code = res.statusCode;
+					var code = res.statusCode;
 					if (res.statusCode === 201) 
-		            {
-		            	var body = JSON.parse(res.body);
-
-	            		var prenom=body.firstName;
-				   		var nom = body.lastName;
-				   		//var fichier = "/var/www/html/log/"+variables.ID_carte2+".txt";
-				   		//reception nom + prenom et écriture dans un fichier
-				   		fs.writeFile('/var/www/html/log/'+variables.ID_carte2+'.txt', 'prenom= '+prenom+' - nom= '+nom+' - id_carte = '+variables.ID_carte2, function (err) {
-				   		//	fs.writeFile('/var/www/html/log/.txt', 'prenom=', function (err) {
-					 	 		if (err) throw err;
-					  			console.log('etudiant ecrit dans fichier /var/www/html/log/'+variables.ID_carte2+'.txt');
-		                    	response.status(201);
-		                    	response.json({ 
-		                    		ecriture: 'faite',
-		                    		nom: nom,
-		                    		prenom: prenom,
-		                    		carte: variables.ID_carte2
-		                    	});
+					{
+						var body = JSON.parse(res.body);
+						var prenom=body.firstName;
+						var nom = body.lastName;
+						//var fichier = "/var/www/html/log/"+variables.ID_carte2+".txt";
+						//reception nom + prenom et écriture dans un fichier
+						fs.writeFile('/var/www/html/log/'+variables.ID_carte2+'.txt', 'prenom= '+prenom+' - nom= '+nom+' - id_carte = '+variables.ID_carte2, function (err) {
+						//	fs.writeFile('/var/www/html/log/.txt', 'prenom=', function (err) {
+								if (err) throw err;
+								console.log('etudiant ecrit dans fichier /var/www/html/log/'+variables.ID_carte2+'.txt');
+								response.status(201);
+								response.json({ 
+									ecriture: 'faite',
+									nom: nom,
+									prenom: prenom,
+									carte: variables.ID_carte2
+								});
 							});
-		            } else {
-		            	if (error) throw error;
-		            	response.status(500);
-		            	response.json({ recup_data: 'Prout'});
-		            }
-		        }
+					} else {
+						if (error) throw error;
+						response.status(500);
+						response.json({ recup_data: 'Prout'});
+					}
+				}
 			});
 		}
-
 	};
