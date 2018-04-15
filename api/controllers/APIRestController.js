@@ -89,7 +89,7 @@ var port = process.env.MONGODB_ADDON_PORT;
 	            else 
 	            {
 	            	response.status(500);
-	            	response.json({ connexion: 'echec'});
+	            	response.json({ connexion: 'Prout'});
 	            }
 
             //else if token token expiré on en redemande un autre
@@ -102,37 +102,42 @@ var port = process.env.MONGODB_ADDON_PORT;
 			//envoi de l'ID_carte a CO2
 			request.get("https://sandbox.compteco2.com/v1/user/cards/?pan="+variables.ID_carte2,{
 
-				'auth' : {
-					'bearer' : 'bearer'+token
+				"auth" : {
+					"Authorization" : "bearer"+token
 				}
 			}, function (error, res) 
 			{
-				if (res.statusCode === 200) 
-	            {
-	            	var body = JSON.parse(res.body);
+				if (!res.statusCode) {
+  					err = new Error('node-librato-metrics: No response received!')
+  					throw err
+				
+	    			var code = res.statusCode;
+					if (res.statusCode === 201) 
+		            {
+		            	var body = JSON.parse(res.body);
 
-            		var prenom=body.firstName;
-			   		var nom = body.lastName;
-			   		//var fichier = "/var/www/html/log/"+variables.ID_carte2+".txt";
-			   		//reception nom + prenom et écriture dans un fichier
-			   		fs.writeFile('/var/www/html/log/'+variables.ID_carte2+'.txt', 'prenom= '+prenom+' - nom= '+nom+' - id_carte = '+variables.ID_carte2, function (err) {
-			   		//	fs.writeFile('/var/www/html/log/.txt', 'prenom=', function (err) {
-				 	 		if (err) throw err;
-				  			console.log('etudiant ecrit dans fichier /var/www/html/log/'+variables.ID_carte2+'.txt');
-	                    	response.status(201);
-	                    	response.json({ 
-	                    		ecriture: 'faite',
-	                    		nom: nom,
-	                    		prenom: prenom,
-	                    		carte: variables.ID_carte2
-	                    	});
-						});
-	            } else {
-	            	if (error) throw error;
-	            	response.status(500);
-	            	response.json({ recup_data: 'echec'});
-
-	            }
+	            		var prenom=body.firstName;
+				   		var nom = body.lastName;
+				   		//var fichier = "/var/www/html/log/"+variables.ID_carte2+".txt";
+				   		//reception nom + prenom et écriture dans un fichier
+				   		fs.writeFile('/var/www/html/log/'+variables.ID_carte2+'.txt', 'prenom= '+prenom+' - nom= '+nom+' - id_carte = '+variables.ID_carte2, function (err) {
+				   		//	fs.writeFile('/var/www/html/log/.txt', 'prenom=', function (err) {
+					 	 		if (err) throw err;
+					  			console.log('etudiant ecrit dans fichier /var/www/html/log/'+variables.ID_carte2+'.txt');
+		                    	response.status(201);
+		                    	response.json({ 
+		                    		ecriture: 'faite',
+		                    		nom: nom,
+		                    		prenom: prenom,
+		                    		carte: variables.ID_carte2
+		                    	});
+							});
+		            } else {
+		            	if (error) throw error;
+		            	response.status(500);
+		            	response.json({ recup_data: 'Prout'});
+		            }
+		        }
 			});
 		}
 
