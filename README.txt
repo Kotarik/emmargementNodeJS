@@ -16,20 +16,18 @@ Les requettes fonctionnelles sont les suivantes :
 		http://localhost:3000/
 	retour : "Houra !"
 
-	
-Les requetes en cours de développement:
 
-	post connexion à l'API distante 
+get connexion à l'API distante 
 	url : 
 		http://localhost:3000/connexion
-	body : 
-		{
-		  ... a venir...
-		}
+	retour :  "Connexion : effectuée"
+	
+Les requetes en cours de développement:
 
 	get pour récuperer des infos
 	url :
 		http://localhost:3000/infos
-
+	retour : nom : xxx
+			 prenom : xxx
 	
 	

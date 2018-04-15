@@ -81,7 +81,7 @@ var port = process.env.MONGODB_ADDON_PORT;
 	                    console.log(body.token_iat);
 
 	                    response.status(201);
-	                    response.json({ connexion: 'effectué'});
+	                    response.json({ connexion: 'effectuée'});
 	                }
 
 	            }
@@ -120,12 +120,18 @@ var port = process.env.MONGODB_ADDON_PORT;
 				 	 		if (err) throw err;
 				  			console.log('etudiant ecrit dans fichier /var/www/html/log/'+variables.ID_carte2+'.txt');
 	                    	response.status(201);
-	                    	response.json({ ecriture: 'faite'});
+	                    	response.json({ 
+	                    		ecriture: 'faite',
+	                    		nom: nom,
+	                    		prenom: prenom,
+	                    		carte: variables.ID_carte2
+	                    	});
 						});
 	            } else {
+	            	if (error) throw error;
 	            	response.status(500);
 	            	response.json({ recup_data: 'echec'});
-	            	//if (err) throw err;
+
 	            }
 			});
 		}
