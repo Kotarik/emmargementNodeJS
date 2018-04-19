@@ -1,7 +1,7 @@
 'use strict';
 var request = require('request');
 var fs = require('fs');
-var variables = require('/var/www/html/api/variables.json');
+var variables = require('/home/antonin/Documents/EPSI/emmargementNodeJS/variables.json');
 var token = null;
 var token_exp = 0;
 var token_iat = 0;
@@ -102,27 +102,22 @@ var port = process.env.MONGODB_ADDON_PORT;
 			//envoi de l'ID_carte a CO2
 			request.get("https://sandbox.compteco2.com/v1/user/cards/?pan="+variables.ID_carte2,{
 
-				"auth" : {
-					"Authorization" : "bearer"+token
+				headers : {
+					"Authorization" : "bearer "+token
 				}
 			}, function (error, res) 
 			{
-				if (!res.statusCode) {
-					err = new Error('node-librato-metrics: No response received!')
-					throw err
-				
-					var code = res.statusCode;
-					if (res.statusCode === 201) 
+					if (res.statusCode === 200) 
 					{
 						var body = JSON.parse(res.body);
 						var prenom=body.firstName;
 						var nom = body.lastName;
 						//var fichier = "/var/www/html/log/"+variables.ID_carte2+".txt";
 						//reception nom + prenom et écriture dans un fichier
-						fs.writeFile('/var/www/html/log/'+variables.ID_carte2+'.txt', 'prenom= '+prenom+' - nom= '+nom+' - id_carte = '+variables.ID_carte2, function (err) {
+						fs.writeFile('/home/antonin/Documents/EPSI/emmargementNodeJS/log/'+variables.ID_carte2+'.txt', 'prenom= '+prenom+' - nom= '+nom+' - id_carte = '+variables.ID_carte2, function (err) {
 						//	fs.writeFile('/var/www/html/log/.txt', 'prenom=', function (err) {
 								if (err) throw err;
-								console.log('etudiant ecrit dans fichier /var/www/html/log/'+variables.ID_carte2+'.txt');
+								console.log('etudiant ecrit dans fichier /home/antonin/Documents/EPSI/emmargementNodeJS/log/'+variables.ID_carte2+'.txt');
 								response.status(201);
 								response.json({ 
 									ecriture: 'faite',
@@ -136,7 +131,6 @@ var port = process.env.MONGODB_ADDON_PORT;
 						response.status(500);
 						response.json({ recup_data: 'Prout'});
 					}
-				}
 			});
 		}
 	};
