@@ -1,7 +1,7 @@
 'use strict';
 var request = require('request');
 var fs = require('fs');
-var variables = require('/home/antonin/Documents/EPSI/emmargementNodeJS/variables.json');
+var variables = require('/var/www/html/api/variables.json');
 var token = null;
 var token_exp = 0;
 var token_iat = 0;
@@ -114,10 +114,10 @@ var port = process.env.MONGODB_ADDON_PORT;
 						var nom = body.lastName;
 						//var fichier = "/var/www/html/log/"+variables.ID_carte2+".txt";
 						//reception nom + prenom et écriture dans un fichier
-						fs.writeFile('/home/antonin/Documents/EPSI/emmargementNodeJS/log/'+variables.ID_carte2+'.txt', 'prenom= '+prenom+' - nom= '+nom+' - id_carte = '+variables.ID_carte2, function (err) {
+						fs.writeFile('/var/www/html/log/'+variables.ID_carte2+'.txt', 'prenom= '+prenom+' - nom= '+nom+' - id_carte = '+variables.ID_carte2, function (err) {
 						//	fs.writeFile('/var/www/html/log/.txt', 'prenom=', function (err) {
 								if (err) throw err;
-								console.log('etudiant ecrit dans fichier /home/antonin/Documents/EPSI/emmargementNodeJS/log/'+variables.ID_carte2+'.txt');
+								console.log('etudiant ecrit dans fichier /var/www/html/log/'+variables.ID_carte2+'.txt');
 								response.status(201);
 								response.json({ 
 									ecriture: 'faite',
