@@ -6,7 +6,7 @@ Le serveur tourne sur le port 3000
 
 Les données de CB sont simulées en variables locales
 
-Les requettes sont les suivantes : 
+Les requettes séparée permettent de se tester indépendament les unes des autres. Elles sont les suivantes : 
 
 	post remonté de l'id carte
 	url :
@@ -33,5 +33,16 @@ Les requettes sont les suivantes :
 		http://localhost:3000/infos
 	retour : nom : xxx
 			 prenom : xxx
-	
+
+
+
+
+La requete finale est la suivante :
+
+	post remonté de l'id carte et connexion + questionnement C02
+	url:
+		http://localhost:3000/id_carte_final
+	retour: Pour le moment c'est un echec a la récuperation de données, après la connexion.
+
+
 	

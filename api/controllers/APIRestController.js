@@ -38,7 +38,7 @@ var port = process.env.MONGODB_ADDON_PORT;
 			//remonté de l'ID_carte bancaire depuis le NFC
 			//if (err) throw err;
 			var ID_carte=req.body.id;
-			console.log("body");
+			console.log("body.id_carte");
 			console.log(ID_carte);
 
 			response.status(201);
@@ -93,7 +93,7 @@ var port = process.env.MONGODB_ADDON_PORT;
 				}
 
 			//else if token token expiré on en redemande un autre
-			 });
+			});
 		},
 
 
@@ -132,5 +132,98 @@ var port = process.env.MONGODB_ADDON_PORT;
 						response.json({ recup_data: 'Prout'});
 					}
 			});
-		}
+		},
+
+//*************************************************************************************************************************************************************************************************************
+//************ Ci-dessus, les fonctions sont éclaté *******************************************
+//************ Ci-dessous, On essais de tout rassembler dans un même processus*****************
+//*********************************************************************************************
+
+
+		remonte_id_carte_final: function(req, response) 
+		{
+			//remonté de l'ID_carte bancaire depuis le NFC
+			//if (err) throw err;
+			var ID_carte=req.body.id;
+			console.log("body.id_carte");
+			console.log(ID_carte);
+
+			//On a l'id carte, on se connecte maintenant a CO2
+
+			request.post(
+			{
+
+				headers: {'content-type': 'application/x-www-form-urlencoded'},
+				url: 'https://sandbox.compteco2.com/v1/login',
+				form: {"app": variables.APP_ID, "secret": variables.SECRET}
+
+			}, function (error, res) 
+			{
+
+				if (res.statusCode === 200) 
+				{
+
+					var body = JSON.parse(res.body);
+
+					if (body.name == "BOC" && body.app == variables.APP_ID) 
+					{
+
+						token = body.token;
+						console.log("body.token");
+						console.log(body.token);
+
+						token_exp = body.token_exp;
+						console.log("body.token_exp");
+						console.log(body.token_exp);
+
+						token_iat = body.token_iat;
+						console.log("body.token_iat");
+						console.log(body.token_iat);
+
+						//Connexion effectué, on envoit maintenant l'ID carte
+
+						request.get("https://sandbox.compteco2.com/v1/user/cards/?pan="+ID_carte,{
+
+							headers : {
+								"Authorization" : "bearer "+token
+							}
+						}, function (error, res) 
+						{
+								if (res.statusCode === 200) 
+								{
+									var body = JSON.parse(res.body);
+									var prenom=body.firstName;
+									var nom = body.lastName;
+									
+									//reception nom + prenom et écriture dans un fichier
+									fs.writeFile('/var/www/html/log/'+ID_carte+'.txt', 'prenom= '+prenom+' - nom= '+nom+' - id_carte = '+ID_carte, function (err) {
+											if (err) throw err;
+											console.log('etudiant ecrit dans fichier /var/www/html/log/'+ID_carte+'.txt');
+											response.status(201);
+											response.json({ 
+												ecriture: 'faite',
+												nom: nom,
+												prenom: prenom,
+												carte: ID_carte
+											});
+										});
+								} else {
+									if (error) throw error;
+									response.status(500);
+									response.json({ recup_data: 'Prout'});
+								}
+						});
+					}
+
+				}
+
+				else 
+				{
+					response.status(500);
+					response.json({ connexion: 'Prout'});
+				}
+
+			//else if token token expiré on en redemande un autre
+			});
+		},
 	};
