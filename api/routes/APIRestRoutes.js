@@ -8,6 +8,8 @@ module.exports = function(app) {
 	app.get('/connexion', API.connexion);
 	app.get('/infos', API.infos);
 	app.get('/', API.get_racine);
+
+	app.post('/id_carte_final', API.remonte_id_carte_final);
 //	app.get('/film', API.list_all_film);
 	
 //	app.get('/film/:filmId', API.read_a_film);

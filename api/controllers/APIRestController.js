@@ -145,8 +145,8 @@ var port = process.env.MONGODB_ADDON_PORT;
 			//remonté de l'ID_carte bancaire depuis le NFC
 			//if (err) throw err;
 			var ID_carte=req.body.id;
-			console.log("body.id_carte");
-			console.log(ID_carte);
+			//console.log("body.id_carte");
+			//console.log(ID_carte);
 
 			//On a l'id carte, on se connecte maintenant a CO2
 
@@ -169,16 +169,16 @@ var port = process.env.MONGODB_ADDON_PORT;
 					{
 
 						token = body.token;
-						console.log("body.token");
-						console.log(body.token);
+						//console.log("body.token");
+						//console.log(body.token);
 
 						token_exp = body.token_exp;
-						console.log("body.token_exp");
-						console.log(body.token_exp);
+						//console.log("body.token_exp");
+						//console.log(body.token_exp);
 
 						token_iat = body.token_iat;
-						console.log("body.token_iat");
-						console.log(body.token_iat);
+						//console.log("body.token_iat");
+						//console.log(body.token_iat);
 
 						//Connexion effectué, on envoit maintenant l'ID carte
 
@@ -189,29 +189,38 @@ var port = process.env.MONGODB_ADDON_PORT;
 							}
 						}, function (error, res) 
 						{
-								if (res.statusCode === 200) 
-								{
-									var body = JSON.parse(res.body);
-									var prenom=body.firstName;
-									var nom = body.lastName;
-									
-									//reception nom + prenom et écriture dans un fichier
-									fs.writeFile('/var/www/html/log/'+ID_carte+'.txt', 'prenom= '+prenom+' - nom= '+nom+' - id_carte = '+ID_carte, function (err) {
-											if (err) throw err;
-											console.log('etudiant ecrit dans fichier /var/www/html/log/'+ID_carte+'.txt');
-											response.status(201);
-											response.json({ 
-												ecriture: 'faite',
-												nom: nom,
-												prenom: prenom,
-												carte: ID_carte
-											});
+							//console.log('res.statusCode');
+							//console.log(res.statusCode);	
+							if (res.statusCode === 200) 
+							{
+								var body = JSON.parse(res.body);
+								var prenom=body.firstName;
+								var nom = body.lastName;
+								
+								//reception nom + prenom et écriture dans un fichier
+								console.log("id_carte");
+								console.log(ID_carte);
+								console.log("prenom");
+								console.log(prenom);
+								console.log("nom");
+								console.log(nom);
+
+								fs.writeFile('/var/www/html/log/'+ID_carte+'.txt', 'prenom= '+prenom+' - nom= '+nom+' - id_carte = '+ID_carte, function (err) {
+										if (err) throw err;
+										console.log('etudiant ecrit dans fichier /var/www/html/log/'+ID_carte+'.txt');
+										response.status(201);
+										response.json({ 
+											ecriture: 'faite',
+											nom: nom,
+											prenom: prenom,
+											carte: ID_carte
 										});
-								} else {
-									if (error) throw error;
-									response.status(500);
-									response.json({ recup_data: 'Prout'});
-								}
+									});
+							} else {
+								if (error) throw error;
+								response.status(500);
+								response.json({ recup_data: 'Prout'});
+							}
 						});
 					}
 
