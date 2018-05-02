@@ -42,7 +42,10 @@ La requete finale est la suivante :
 	post remonté de l'id carte et connexion + questionnement C02
 	url:
 		http://localhost:3000/id_carte_final
-	retour: Pour le moment c'est un echec a la récuperation de données, après la connexion.
-
-
-	
+	retour: 
+		{
+    		  "ecriture": "faite",
+    		  "nom": "Sims",
+    		  "prenom": "Dam",
+    		  "carte": "5469234684536946"
+		}
