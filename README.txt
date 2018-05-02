@@ -1,6 +1,7 @@
 Pour le moment, cette API REST est utilisé en local sur une VM.
 
 Il est nécéssaire de faire un "npm install" après avoir téléchargé le projet
+Il est Ã©galement nÃ©cÃ©ssaire de crÃ©er un dossier vide "log" a la racine du projet
 
 Le serveur tourne sur le port 3000
 
