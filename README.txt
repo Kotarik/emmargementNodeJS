@@ -1,11 +1,14 @@
 Pour le moment, cette API REST est utilisé en local sur une VM.
 
-Il est nécéssaire de faire un "npm install" après avoir téléchargé le projet
-Il est Ã©galement nÃ©cÃ©ssaire de crÃ©er un dossier vide "log" a la racine du projet
+Pour faire fonctionner le projet il est nécéssaire de : 
+	- Creer l'arborescence suivante : 	/var/www/html/emmargementNodeJS
+	- Faire un git clone dans : 		/var/www/html/emmargementNodeJS
+	- Creer le dossier suivant : 		/var/www/html/emmargementNodeJS/log
+	- Installer npm et faire un "npm install" après avoir téléchargé le projet
 
 Le serveur tourne sur le port 3000
 
-Les données de CB sont simulées en variables locales
+Les données de CB sont poussé sur l'API via postman
 
 Les requettes séparée permettent de se tester indépendament les unes des autres. Elles sont les suivantes : 
 
