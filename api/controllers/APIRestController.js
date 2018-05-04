@@ -4,11 +4,11 @@ var request = require('request');
 //module pour utilise les calendriers
 var ical = require('node-ical');
 //module pour parser les calendrier
-var data = ical.parseFile('/var/www/html/api/ics/');
+//var data = ical.parseFile('/var/www/html/emmargementNodeJS/api/ics/');
 //module pour écrire sur le filesystème
 var fs = require('fs');
 //variable détaché du code pour ne pas les publier sur github
-var variables = require('/var/www/html/api/variables.json');
+var variables = require('/var/www/html/emmargementNodeJS/api/variables.json');
 //initialisation des variables du token
 //le token
 var token = null;
@@ -141,15 +141,15 @@ var port = process.env.MONGODB_ADDON_PORT;
 					var prenom=body.firstName;
 					var nom = body.lastName;
 
-					//var fichier = "/var/www/html/log/"+variables.ID_carte2+".txt";
+					//var fichier = "/var/www/html/emmargementNodeJS/log/"+variables.ID_carte2+".txt";
 					//reception nom + prenom et écriture dans un fichier
 
 					//on écrit dans un fichier les données récupéré
-					fs.writeFile('/var/www/html/log/'+variables.ID_carte2+'.txt', 'prenom= '+prenom+' - nom= '+nom+' - id_carte = '+variables.ID_carte2, function (err) {
+					fs.writeFile('/var/www/html/emmargementNodeJS/log/'+variables.ID_carte2+'.txt', 'prenom= '+prenom+' - nom= '+nom+' - id_carte = '+variables.ID_carte2, function (err) {
 							//s'il n'y a pas d'erreur
 							if (err) throw err;
 							//on affiche en console shell nodejs le succès de l'écriture
-							console.log('etudiant ecrit dans fichier /var/www/html/log/'+variables.ID_carte2+'.txt');
+							console.log('etudiant ecrit dans fichier /var/www/html/emmargementNodeJS/log/'+variables.ID_carte2+'.txt');
 							//on retourne a postman ou au module NFC l'information comme quoi on a bien récupéré les données utilisateurs
 							response.status(201);
 							response.json({ 
@@ -241,9 +241,9 @@ var port = process.env.MONGODB_ADDON_PORT;
 								console.log("nom");
 								console.log(nom);
 
-								fs.writeFile('/var/www/html/log/'+ID_carte+'.txt', 'prenom= '+prenom+' - nom= '+nom+' - id_carte = '+ID_carte, function (err) {
+								fs.writeFile('/var/www/html/emmargementNodeJS/log/'+ID_carte+'.txt', 'prenom= '+prenom+' - nom= '+nom+' - id_carte = '+ID_carte, function (err) {
 										if (err) throw err;
-										console.log('etudiant ecrit dans fichier /var/www/html/log/'+ID_carte+'.txt');
+										console.log('etudiant ecrit dans fichier /var/www/html/emmargementNodeJS/log/'+ID_carte+'.txt');
 										response.status(201);
 										response.json({ 
 											ecriture: 'faite',
